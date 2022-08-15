@@ -1,24 +1,40 @@
-# README
+# <Travel Assistance>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## サイト概要
+旅行先で知りたい情報を検索でき、実際に行って投稿し合い、情報を共有できるサイト
 
-Things you may want to cover:
+### サイトテーマ
+旅行先で、知りたいプチ情報を検索、実際に行った人が投稿したりできるレビューサイト
 
-* Ruby version
 
-* System dependencies
+### テーマを選んだ理由
+旅行先の周辺に自分の知りたい情報（観光名所、レストラン、駐車場、特産品、コインランドリー等）を手軽に
+検索し知ることができれば便利だと思ったため。
 
-* Configuration
 
-* Database creation
+### ターゲットユーザ
+旅行に行こうとしている、計画している人
 
-* Database initialization
 
-* How to run the test suite
+### 主な利用シーン
+旅行先にどのような観光名所、レストラン、特産品があるのか、最寄りの駐車場、コインランドリー、コンビニ等、
+知りたい情報を検索でき、実際に行った人が投稿できる
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+## 設計書
+実装機能リスト：https://docs.google.com/spreadsheets/d/1mnkMrn6lakdyx16faXsLHSRnSvcGyDE1ADHQfM-ijrs/edit?usp=sharing
 
-* ...
+<...>
+
+## 開発環境
+
+- OS：Linux(CentOS)
+- 言語：HTML,CSS,JavaScript,Ruby,SQL
+- フレームワーク：Ruby on Rails
+- JS ライブラリ：jQuery
+- IDE：Cloud9
+
+## 使用素材
+
+- 外部サービスの画像素材・音声素材を使用した場合は、必ずサービス名と URL を明記してください。
+- 使用しない場合は、使用素材の項目を README から削除してください。
