@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <h1>投稿詳細</h1>
+  </div>
+    <div class="row">
+      <tr>
+        <td>
+          <% if @post.image.attached? %>
+            <%= image_tag @post.image, size: "300x300" %>
+          <% else %>
+            <%= image_tag 'no_image', size: "300x300" %>
+          <% end %>
+        </td>
+      </tr>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label><%= @post.created_at.strftime('%Y年%m月%d日') %></label>
+      <div>
+
+      <div class="form-group">
+        <label><% if @post.liked_by?(current_customer) %>
+         <!--#一致するレコードが存在する＝すでにいいね済みの場合はdestroyアクションへ-->
+          <%= link_to public_post_likes_path(@post.id), method: :delete do %>
+            <span style="color:red;">❤︎</span>いいねを外す
+          <% end %>
+        <% else %>
+        <!--# 一致するレコードが存在しない＝まだいいねしていない場合はcreateアクションへ-->
+          <%= link_to public_post_likes_path(@post.id), method: :post do %>
+            <span>❤︎</span>いいね
+          <% end %>
+        <% end %>
+        <!-- 変数@likes_countを表示してください -->
+    　　<%= @likes_count %>
+    　　</label>
+    　<div>
+    </form>
+ 
+
+<h3>◆タイトル</h3>
+<p><%= @post.title %></p>
+
+<h3>◆本文</h3>
+<p><%= @post.body %></p>

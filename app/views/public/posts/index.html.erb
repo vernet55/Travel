@@ -1,0 +1,27 @@
+<div class="container px-5 px-sm-0">
+    <div class="row">
+        <div class="col-md-3">
+          <h5>☆あなたのおすすめを投稿</h5>
+          　　<br />
+              <%= form_with model: @post, url:public_posts_path do |f| %>
+                <div class="form-group">
+                  <label>◆画像を選択</label>
+                    </br>
+                    <%= f.file_field :image, accept: "image/*" %>
+                </div>
+                <div class="form-group">
+                  <label>◆タイトル</label>
+                    </br>
+                    <%= f.text_field :title %>
+                </div>
+                <div class="form-group">
+                  <label>◆本文</label>
+                    </br>
+                    <%= f.text_area :body %>
+                </div>
+                    <%= f.submit '投稿' %>
+                <% end %>
+
+    　　</div>
+  　</div>
+</div>
