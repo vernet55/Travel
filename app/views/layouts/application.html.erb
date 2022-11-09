@@ -46,24 +46,28 @@
               <div class="social"></div>
               <% if customer_signed_in? %>
                 <li>
-                  <%= link_to "ホーム", public_posts_path, class:"nav-link text-light" %>
+                  <%= link_to "新規投稿", new_public_post_path, class:"nav-link text-light" %>
                 </li>
                 <li>
-                  <%= link_to "マイページ", public_customers_my_page_path, class:"nav-link text-light" %>
+                  <%= link_to "投稿を見る", public_posts_path, class:"nav-link text-light" %>
                 </li>
                 <li>
-                  <%= link_to "投稿", public_posts_path, class: "nav-link text-light" %>
+                  <%= link_to "マイページ", public_path(current_customer.id), class:"nav-link text-light" %>
                 </li>
                 <li>
                   <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class: "nav-link text-light"  %>
                 </li>
+
               <% elsif admin_signed_in? %>
                 <li>
-                  <%= link_to "ログアウト", destroy_admin_session_path,  method: :delete , class:"btn btn-Light" %>
+                  <%= link_to "ホーム", admin_root_path, class:"nav-link text-light" %>
+                </li>
+                <li>
+                  <%= link_to "ログアウト", destroy_admin_session_path,  method: :delete , class:"nav-link text-light" %>
                 </li>
               <% else %>
                 <li>
-                  <%= link_to new_customer_registration_path, class: "nav-link text-light" do %>
+                  <%= link_to new_customer_registration_path, class: "nav-link text-light" do %>f
                   <i class="fas fa-user-plus"></i>新規登録
                   <% end %>
                 </li>

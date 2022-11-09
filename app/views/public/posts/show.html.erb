@@ -1,26 +1,45 @@
 <div class="container">
   <div class="row">
-    <h1>投稿詳細</h1>
-  </div>
-    <div class="row">
-      <tr>
-        <td>
-          <% if @post.image.attached? %>
-            <%= image_tag @post.image, size: "300x300" %>
-          <% else %>
-            <%= image_tag 'no_image', size: "300x300" %>
-          <% end %>
-        </td>
-      </tr>
-    </div>
+    <div class="col-md-3">
+      <br/>
+      <h3>≪投稿詳細≫</h3>
 
-    <form>
+      <div class="d-flex flex-column bd-highlight mb-1">
+
+          <br/>
+          <div class="p-1 bd-highlight"><%= @customer.name %></div>
+          <div class="p-1 bd-highlight"><%= link_to public_path(@customer.id) do %>
+            <%= image_tag @customer.get_profile_image(100, 100), class:"rounded-circle" %>
+            <% end %></div>
+
+        <% if customer_signed_in? && current_customer.id != @customer.id %>
+          <br/>
+          <% if current_customer.following?(@customer) %>
+            <%= link_to "フォロー外す", public_customer_relationships_path(@customer.id), method: :delete, class:"btn-sm btn-danger btn-lg" %>
+          <% else %>
+            <%= link_to "フォローする", public_customer_relationships_path(@customer.id), method: :post, class:"btn-sm btn-success btn-lg" %>
+          <% end %>
+        <% end %>
+
+      </div>
+
+      <br />
+      <div class="row">
+        <% if @post.image.attached? %>
+          <%= image_tag @post.image, size: "370x370" %>
+        <% else %>
+          <%= image_tag 'no_image', size: "370x370" %>
+        <% end %>
+      </div>
+
       <div class="form-group">
         <label><%= @post.created_at.strftime('%Y年%m月%d日') %></label>
-      <div>
+      </div>
 
       <div class="form-group">
-        <label><% if @post.liked_by?(current_customer) %>
+       <label>
+        <% if customer_signed_in? %>
+          <% if @post.liked_by?(current_customer) %>
          <!--#一致するレコードが存在する＝すでにいいね済みの場合はdestroyアクションへ-->
           <%= link_to public_post_likes_path(@post.id), method: :delete do %>
             <span style="color:red;">❤︎</span>いいねを外す
@@ -32,14 +51,63 @@
           <% end %>
         <% end %>
         <!-- 変数@likes_countを表示してください -->
+        <% end %>
     　　<%= @likes_count %>
-    　　</label>
-    　<div>
-    </form>
- 
+    　 </label>
+    　</div>
 
-<h3>◆タイトル</h3>
-<p><%= @post.title %></p>
+      <h3>◆タイトル</h3>
+      <p><%= @post.title %></p>
 
-<h3>◆本文</h3>
-<p><%= @post.body %></p>
+      <h3>◆説明文</h3>
+      <p><%= @post.body %></p>
+    </div>
+
+
+
+    <div class="col-md-8 offset-md-1">
+
+      <br />
+      <br/>
+      <table class="table table-hover table-inverse">
+       <thead>
+        <tr>
+          <th></th>
+          <th>投稿者名 </th>
+          <th></th>
+          <th>コメント</th>
+          <th>機能</th>
+        </tr>
+       </thead>
+       <tbody>
+         <% @comments.each do |comment| %>
+          <tr>
+            <td><%= comment.created_at.strftime('%Y年%m月%d日') %></td>
+            <td><%= comment.customer.name %></td>
+            <td></td>
+            <td><%= comment.comment %></td>
+           
+            <% if customer_signed_in? && comment.customer.id == current_customer.id %>
+              <td><%= link_to "編集", edit_public_post_comment_path(comment.post.id,comment.id) %></td>
+
+              <td><%= link_to "削除", public_post_comment_path(comment.post.id,comment.id), method: :delete, "data-confirm" => "本当に消しますか？" ,class:"btn btn-sm btn-danger"%></td>
+            <% end %>
+          </tr>
+         <% end %>
+       </tbody>
+      </table>
+      <%= form_with model: @comment, url: public_post_comments_path(@post.id) do |f| %>
+        <%= f.text_area :comment, size: "40x5" , placeholder: "コメントを書こう！"%>
+        <%= f.submit '送信' %>
+      <% end %>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+

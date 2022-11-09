@@ -1,9 +1,10 @@
 <div class="container px-5 px-sm-0 pb-5">
     <div class="row">
         <div class="col-md-3">
-          <h2>マイページ</h2>
           <br/>
-          <%= image_tag @customer.get_profile_image(100, 100) %>
+          <h3>≪マイページ≫</h3>
+            <br/>
+            <%= image_tag @customer.get_profile_image(150, 150), class:"rounded-circle" %>
           <table class="table">
             <tbody>
               <tr></tr>
@@ -16,14 +17,25 @@
                 <th><%= @customer.comment %><th>
               </tr>
 
+              <div class="d-flex">
+                <%= link_to public_customer_follows_path(@customer) do %>
+                  <h6>フォロー<%= @following_customers.count %>人</h6>
+                <% end %>&nbsp;&nbsp;
+                  <h6>  /  </h6>
+                <%= link_to public_customer_followers_path(@customer) do %>
+                  <h6>フォロワー<%= @follower_customers.count %>人</h6>
+                <% end %>
+              </div>
             </tbody>
           </table>
-
+      <br/>
+      <% if current_customer.id == @customer.id %>
            <div class="row">
              <%= link_to public_edit_customer_path(@customer.id), class:"btn btn-outline-secondary btn-block"  do %>
                <i class="fas fa-user-cog"></i>
              <% end %>
            </div>
+      <% end %>
         </div>
 
         <div class="col-md-8 offset-md-1">
@@ -32,16 +44,15 @@
               <table class="table table-hover table-inverse">
                 <thead>
                   <tr>
-                    <th></th>
+                    <th>画像</th>
                     <th>タイトル</th>
-                    <th>本文</th>
-                    <th></th>
+                    <th>説明文</th>
+                    <th>機能</th>
                   </tr>
                 </thead>
 
 　　　　　　　<tbody>
                 <% @posts.each do |post| %>
-
                     <tr>
                       <td>
                         <%= link_to public_post_path(post.id) do %>
@@ -54,6 +65,11 @@
                       </td>
                       <td><%= post.title %></td>
                       <td><%= post.body %></td>
+
+                    <% if current_customer.id == @customer.id %>
+                      <td><%= link_to "編集", edit_public_post_path(post) %></td>
+                      <td><%= link_to "削除", public_post_path(post.id), method: :delete, "data-confirm" => "本当に消しますか？" ,class:"btn btn-sm btn-danger"%></td>
+                    <% end %>
                     </tr>
                 <% end %>
               </tbody>

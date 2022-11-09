@@ -1,2 +1,135 @@
-<h1>お得な情報を投稿しよう！</h1>
+<div class="container px-5 px-sm-0">
+    <div class="row">
+        <div class="col-md-3">
+          <br />
+          <h5>☆あなたのおすすめを投稿☆</h5>
+              <br />
+              <%= form_with model: @post, url:public_posts_path do |f| %>
+                <div class="form-group">
+                  <label>◆画像を選択</label>
+                    </br>
+                    <%= f.file_field :image, accept: "image/*" %>
+                </div>
+                <div class="form-group">
+                  <label>◆タイトル</label>
+                    </br>
+                    <%= f.text_field :title %>
+                </div>
+                <div class="form-group">
+                  <label>◆説明文</label>
+                    </br>
+                    <%= f.text_area :body %>
+                </div>
+                    <%= f.submit '投稿' %>
 
+                  <br/>
+　　　　　　　　　<div class="actions">
+
+                    緯度<%= f.text_field :lat,:value =>"緯度", id: :lat %>
+
+                    <br />
+                    経度<%= f.text_field :lng,:value =>"経度", id: :lng %>
+                  </div>
+                <% end %>
+        </div>
+
+        <div class="col-md-8 offset-md-1">
+
+          <br/>
+          <input id="address" type="textbox">
+          <input type="button" value="検索" onclick="codeAddress()">
+          <p>★マーカーをドラック＆ドロップで位置の調整ができます。<p>
+
+          <div id="display">検索結果、、、、！</div>
+
+          <div id="map" style='height: 750px; width:auto;'></div>
+            <script>
+
+              let map;
+              let marker;
+
+              let geocoder;
+              let aft;
+
+              const display = document.getElementById('display')
+
+              function initMap() {
+                geocoder = new google.maps.Geocoder()
+
+                // マップを作成
+                map = new google.maps.Map(document.getElementById('map'), {
+                  // マップの中心に表示する場所の緯度経度を指定
+
+                  center: { lat: 35.6769883, lng: 139.7588499 },//皇居
+                  zoom: 18,
+                  styles: [
+                            {
+                      		    featureType: 'poi',
+                      		    stylers: [
+                      			    { visibility: 'off' }
+                      		    ]
+                            },
+                            {
+                              featureType: 'landscape.man_made',
+                              stylers: [
+                      			    { visibility: 'off' }
+                      		    ]
+                            },
+                            {
+                              featureType: 'administrative.locality',
+                              stylers: [
+                      			    { visibility: 'off' }
+                      		    ]
+                            },
+                          ]
+                });
+                // マーカーを立てる場所の緯度経度を指定
+                // marker = new google.maps.Marker({
+                //   position: { lat: 35.6769883, lng: 139.7588499 },
+                //   map: map
+                // });
+              }
+                //検索フォームのボタンが押された時に実行される
+              function codeAddress(){
+                //検索フォームの入力内容を取得
+                let inputAddress = document.getElementById('address').value;
+
+                geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+                  //該当する検索結果がヒットした時に、地図の中心を検索結果の緯度経度に更新する
+                  if (status == 'OK') {
+                    //マーカーが複数できないようにする
+                    if (aft == true){
+                        marker.setMap(null);
+                    }
+
+                    map.setCenter(results[0].geometry.location);
+                        marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        draggable: true // ドラッグ可能にする
+                    });
+                    //二度目以降か判断
+                    aft = true;
+                    //検索した時に緯度経度を地図の上に表示する
+                    display.textContent = "検索結果：" + results[ 0 ].geometry.location;
+                    //検索した時に緯度経度をフォームに入力する
+                    document.getElementById('lat').value = results[0].geometry.location.lat();
+                    document.getElementById('lng').value = results[0].geometry.location.lng();
+                    // マーカーのドロップ（ドラッグ終了）時のイベント
+                    google.maps.event.addListener( marker, 'dragend', function(ev){
+                        // イベントの引数evの、プロパティ.latLngが緯度経度
+                        document.getElementById('lat').value = ev.latLng.lat();
+                        document.getElementById('lng').value = ev.latLng.lng();
+                    });
+                  } else {
+                    //検索結果が何もなかった場合に表示
+                    alert('該当する結果がありませんでした：' + status);
+                  }
+                });
+              }
+            </script>
+
+            <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['API_KEY'] %>&callback=initMap" async defer></script>
+        </div>
+    </div>
+</div>
