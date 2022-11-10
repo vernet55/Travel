@@ -27,8 +27,7 @@
 
 ## 設計書
 実装機能リスト：https://docs.google.com/spreadsheets/d/1mnkMrn6lakdyx16faXsLHSRnSvcGyDE1ADHQfM-ijrs/edit?usp=sharing
-
-<...>
+テスト仕様書　：https://docs.google.com/spreadsheets/d/1aWjuxoPk_VYtuMX-rIMnumIJdhhVbtvx004wjLb6EiU/edit?usp=sharing
 
 ## 開発環境
 
